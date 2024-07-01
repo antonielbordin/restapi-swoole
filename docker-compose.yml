@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+  backend-swoole:
+    container_name: api-swoole
+    build:
+      context: .
+    ports:
+      - "6000:5000"
+    volumes:
+      - ./api:/app
+    networks:
+      - api-network
+
+# Here we specify our networks
+networks:
+  api-network:
+    driver: bridge
+
+    
