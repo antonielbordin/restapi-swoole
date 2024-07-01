@@ -1,7 +1,7 @@
-# Imagem base
+# Base image
 FROM php:8.1-fpm
 
-# Atualizar fontes e instalar dependências do sistema
+# Update sources and install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -16,8 +16,11 @@ RUN apt-get update && apt-get install -y \
     libgd-dev \
     libonig-dev
 
-# Limpar cache
+# Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Instalar Swoole
 RUN cd /tmp && wget https://pecl.php.net/get/swoole-4.8.1.tgz && \
@@ -30,18 +33,18 @@ RUN cd /tmp && wget https://pecl.php.net/get/swoole-4.8.1.tgz && \
 RUN touch /usr/local/etc/php/conf.d/swoole.ini && \
     echo 'extension=swoole.so' > /usr/local/etc/php/conf.d/swoole.ini
 
-# Instalar as extensões do PHP (zip, gd)
+# Install PHP extensions (zip, gd)
 RUN docker-php-ext-install zip gd
 
-# Criar diretório de dados
+# Create data directory
 RUN mkdir -p /app/data
 
 WORKDIR /app
 
-# Copiar fonte para a pasta api no contêiner
+# Copy source to api folder in container
 COPY ./api /app
 
 EXPOSE 5000
 
-# Comando padrão para iniciar o serviço
+# Standard command to start the service
 CMD ["/usr/local/bin/php", "/app/index.php"]

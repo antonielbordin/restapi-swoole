@@ -1,14 +1,14 @@
 {
-  "name": "stilosdesign/restapi-swoole",
+  "name": "antonielbordin/restapi-swoole",
   "description": "API Rest sample using PHP and Swoole",
   "keywords": ["restapi", "swoole", "php"],
-  "homepage": "https://github.com/stilosdesign/restapi-swoole",
+  "homepage": "https://github.com/antonielbordin/restapi-swoole",
   "type": "library",
   "version": "1.0.0",
   "authors": [
     {
       "name": "Antoniel Bordin",
-      "email": "webmaster@stilosdesign.com.br",
+      "email": "antonielbordin@hotmail.com",
       "role": "owner"
     }
   ],
