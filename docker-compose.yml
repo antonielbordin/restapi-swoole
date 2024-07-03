@@ -5,7 +5,7 @@ services:
     build:
       context: .
     ports:
-      - "6000:5000"
+      - "6000:5009"
     volumes:
       - ./api:/app
     networks:

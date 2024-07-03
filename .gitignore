@@ -1,3 +1,32 @@
-dist/
-node_modules/
+# General options
+vendor
+vendor/*
+/vendor/*
+
+# Logs
+/logs/*
+!/logs/empty
+
+# Config and temps
+/config/app.php
+/app/tmp/*
+
+# Others
+composer.lock
 README-base.md
+
+### PHPUnit ###
+# Covers PHPUnit
+# Reference: https://phpunit.de/
+
+# Generated files
+.phpunit.result.cache
+.phpunit.cache
+
+# PHPUnit
+/app/phpunit.xml
+/phpunit.xml
+
+# Build data
+/build/
+

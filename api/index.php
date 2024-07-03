@@ -2,112 +2,69 @@
 define('DS', DIRECTORY_SEPARATOR);
 define('ROUTE', realpath(dirname(__FILE__)) . DS); 
 
-use Swoole\Http\Request;
-use Swoole\Http\Response;
-use Swoole\Http\Server;
-
-// Create an instance of the HTTP server
-$http = new Server("0.0.0.0", 5000, SWOOLE_BASE);
-
-$http->on("start", function ($server) {
-  echo "Swoole http server is started at http://127.0.0.1:5000\n";   
-});
-
-// Define a route for handling GET requests API
-$http->on('request', function (Request $request, Response $response) {
-  $path = $request->server['path_info'];
-  if ($request->server['request_method'] === 'GET' && $path === '/test') {
-    // Handle 404 Not Found
-    $response->status(200);
-    $response->header('Content-Type', 'text/plain');
-    $response->end('Success!');
-  } else {
-    // Handle 404 Not Found
-    $response->status(404);
-    $response->header('Content-Type', 'text/plain');
-    $response->end('Not Found!');
-  }
-
-});
-
-// Start the server
-$http->start();
-
-/*
 require 'vendor/autoload.php';
 
 use Swoole\Http\Request;
 use Swoole\Http\Response;
 use Swoole\Http\Server;
-use Exception;
 
 use Firebase\JWT\JWT;
 
 // JWT secret key 
-$jwtSecret = 'your_secret_key';
+$jwtSecret = 'UThEQ9Mfoj3jYKSvhSrq1vm6LwIZ1zta';
 
-// Routes protected by JWT
-$protectedRoutes = ['/products', '/customers'];
+// Predefined user credentials
+$credentials = [
+  'username' => 'admin',
+  'password' => 'admin'
+];
 
 // Create an instance of the HTTP server
-$http = new Server("0.0.0.0", 5000, SWOOLE_BASE);
+$http = new Server("0.0.0.0", 5009, SWOOLE_BASE);
 
 $http->on("start", function ($server) {
-  echo "Swoole http server is started at http://127.0.0.1:5000\n";   
+  echo "Swoole http server is started at http://127.0.0.1:5009\n";   
 });
 
-// Define a route for handling GET requests API
-$http->on('request', function (Request $request, Response $response) 
-  use ($jwtSecret, $protectedRoutes) 
-{
+// Define a route for handling POST requests for authentication
+$http->on('request', function (Request $request, Response $response) use ($jwtSecret, $credentials) {
   $path = $request->server['request_uri'];
- 
-  // Checks if the route is protected
-  if (in_array($path, $protectedRoutes)) {
-    // Checks if the JWT token is present in the Authorization header
-    $authorizationHeader = $request->header['authorization'] ?? null;
-    if (!$authorizationHeader) {
-      $response->status(401);
-      $response->end(json_encode(['error' => 'JWT token not provided']));
-      return;
-    }
 
-    // Checks if the JWT token is valid
-    [$tokenType, $token] = explode(' ', $authorizationHeader);
-    if ($tokenType !== 'Bearer') {
-      $response->status(401);
-      $response->end(json_encode(['error' => 'Invalid JWT token']));
-      return;
-    }
+  if ($request->server['request_method'] === 'POST' && $path === '/authenticate') {
+    // Get POST data
+    $postData = $request->post;
+    $username = $postData['username'] ?? null;
+    $password = $postData['password'] ?? null;
 
-    try {
-      // Decodes the JWT token
-      $decodedToken = JWT::decode($token, $jwtSecret, ['HS256']);
-    } catch (Exception $e) {
+    // Check credentials
+    if ($username === $credentials['username'] && $password === $credentials['password']) {
+      // Generate JWT token
+      $payload = [
+        'iss' => 'authenticator.api', // Issuer
+        'iat' => time(),              // Issued at: time when the token was generated
+        'exp' => time() + 3600,       // Expiration time (1 hour from now)
+        'sub' => $username,           // Subject (the username)
+        'role' => 'admin'             // role (the role for user)
+      ];
+      
+      $jwt = JWT::encode($payload, $jwtSecret, 'HS256');
+
+      // Send response with JWT token
+      $response->header("Content-Type", "application/json");
+      $response->end(json_encode(['token' => $jwt]));
+    } else {
+      // Invalid credentials
       $response->status(401);
-      $response->end(json_encode(['error' => 'Invalid JWT token']));
-      return;
+      $response->header("Content-Type", "application/json");
+      $response->end(json_encode(['error' => 'Invalid username or password']));
     }
-  }
-  
-  // Logic to handle requests for routes
-  switch ($request->server['request_uri']) {
-    case '/products':
-      $response->header("Content-Type", "application/json");
-      $response->end(json_encode(['message' => 'Product list']));
-      break;
-    case '/customers':
-      $response->header("Content-Type", "application/json");
-      $response->end(json_encode(['message' => 'Customer list']));
-      break;
-    default:
-      $response->status(404);
-      $response->end(json_encode(['error' => 'Route not found']));
-      break;
+  } else {
+    // Route not found
+    $response->status(404);
+    $response->header("Content-Type", "application/json");
+    $response->end(json_encode(['error' => 'Route not found']));
   }
 });
 
 // Start the server
 $http->start();
-
-*/
