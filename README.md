@@ -71,8 +71,8 @@ This is a simple REST API for user authentication using JWT and basic user manip
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
-   cd your-repository
+   git clone https://github.com/antonielbordin/restapi-swoole.git
+   cd restapi-swoole
    ```
 
 2. Install dependencies using Composer:
