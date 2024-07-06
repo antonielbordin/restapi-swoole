@@ -1,27 +1,30 @@
 <?php
 
-namespace Application\Services;
+namespace ApiSwoole\Application\Services;
 
-use Domain\Entities\User;
-use Domain\Repositories\IUserRepository;
+use ApiSwoole\Infrastructure\Repositories\UserRepository;
 
 class UserService
 {
-    private $userRepository;
+  private $userRepository;
 
-    public function __construct(IUserRepository $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
+  public function __construct()
+  {
+    $this->userRepository = new UserRepository();
+  }
 
-    public function registerUser($name, $login, $password)
-    {
-        $user = new User($name, $login, $password);
-        $this->userRepository->save($user);
-    }
+  public function getAllUsers()
+  {
+    return $this->userRepository->findAll();
+  }
 
-    public function getUserByLogin($login)
-    {
-        return $this->userRepository->findByLogin($login);
-    }
+  public function getUserById($id)
+  {
+    return $this->userRepository->findById($id);
+  }
+
+  public function createUser($data)
+  {
+    return $this->userRepository->create($data);
+  }
 }

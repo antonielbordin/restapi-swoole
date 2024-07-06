@@ -1,35 +1,39 @@
 <?php
 
-namespace Infrastructure\Repositories;
+namespace ApiSwoole\Infrastructure\Repositories;
 
-use Domain\Entities\User;
-use Domain\Repositories\IUserRepository;
+use ApiSwoole\Domain\Entities\User;
+use ApiSwoole\Domain\Repositories\IUserRepository;
 
 class UserRepository implements IUserRepository
 {
-    private $database;
+  private $users = [];
 
-    public function __construct($database)
-    {
-        $this->database = $database;
+  public function __construct()
+  {
+    // Data simulation
+    $this->users[] = new User(1, 'John Doe', 'john@example.com');
+  }
+
+  public function findAll()
+  {
+    return $this->users;
+  }
+
+  public function findById($id)
+  {
+    foreach ($this->users as $user) {
+      if ($user->getId() == $id) {
+        return $user;
+      }
     }
+    return null;
+  }
 
-    public function save(User $user)
-    {
-        $stmt = $this->database->prepare("INSERT INTO users (name, login, password) VALUES (?, ?, ?)");
-        $stmt->execute([$user->getName(), $user->getLogin(), $user->getPassword()]);
-    }
-
-    public function findByLogin($login)
-    {
-        $stmt = $this->database->prepare("SELECT * FROM users WHERE login = ?");
-        $stmt->execute([$login]);
-        $result = $stmt->fetch();
-
-        if ($result) {
-            return new User($result['name'], $result['login'], $result['password']);
-        }
-
-        return null;
-    }
+  public function create($data)
+  {
+    $user = new User(count($this->users) + 1, $data['name'], $data['email']);
+    $this->users[] = $user;
+    return $user;
+  }
 }

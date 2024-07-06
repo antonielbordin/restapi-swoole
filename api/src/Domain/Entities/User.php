@@ -1,32 +1,32 @@
 <?php
 
-namespace Domain\Entities;
+namespace ApiSwoole\Domain\Entities;
 
 class User
 {
-    private $name;
-    private $login;
-    private $password;
+  private $id;
+  private $name;
+  private $email;
 
-    public function __construct($name, $login, $password)
-    {
-        $this->name = $name;
-        $this->login = $login;
-        $this->password = password_hash($password, PASSWORD_BCRYPT);
-    }
+  public function __construct($id, $name, $email)
+  {
+    $this->id = $id;
+    $this->name = $name;
+    $this->email = $email;
+  }
 
-    public function getName()
-    {
-        return $this->name;
-    }
+  public function getId()
+  {
+    return $this->id;
+  }
 
-    public function getLogin()
-    {
-        return $this->login;
-    }
+  public function getName()
+  {
+    return $this->name;
+  }
 
-    public function getPassword()
-    {
-        return $this->password;
-    }
+  public function getEmail()
+  {
+    return $this->email;
+  }
 }

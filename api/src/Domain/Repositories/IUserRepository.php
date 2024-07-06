@@ -1,11 +1,10 @@
 <?php
 
-namespace Domain\Repositories;
-
-use Domain\Entities\User;
+namespace ApiSwoole\Domain\Repositories;
 
 interface IUserRepository
 {
-    public function save(User $user);
-    public function findByLogin($login);
+  public function findAll();
+  public function findById($id);
+  public function create($data);
 }
