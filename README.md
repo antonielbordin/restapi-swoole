@@ -34,7 +34,7 @@ This is a simple REST API for user authentication using JWT and basic user manip
 └── .env
 ```
 
-### Descrição das Pastas
+### Description of Folders
 
 - **src/Domain**:
   - **Entities**: Contains business entities that are domain objects with basic business rules.
@@ -60,7 +60,7 @@ This is a simple REST API for user authentication using JWT and basic user manip
   - `config.php`: Project dependencies configuration file.
 
 - **public**:
-  - `index.php`: Input file that initializes the Slim framework and defines routes.
+  - `index.php`: Input file that initializes the Swoole Server.
   - `swagger.php`: File to generate Swagger JSON documentation.
 
 - **tests**:
@@ -106,13 +106,13 @@ This is a simple REST API for user authentication using JWT and basic user manip
     ```
   - Response:
     - `201 Created`: User created successfully.
-    - `400 Bad Request`: Input inválido.
+    - `400 Bad Request`: Invalid input.
 
 - **Search User by Login**
   - **GET /users/{login}**
   - Response:
-    - `200 OK`: Usuário encontrado.
-    - `404 Not Found`: Usuário não encontrado.
+    - `200 OK`: User found.
+    - `404 Not Found`: User not found.
 
 ## Tests
 
@@ -126,8 +126,8 @@ vendor/bin/phpunit
 ## Contribution
 
 1. Fork the project.
-2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`).
-3. Commit suas alterações (`git commit -am 'Adiciona nova feature'`).
+2. Create a branch for your feature (`git checkout -b feature/new-feature`).
+3. Commit your changes (`git commit -am 'Adds new feature'`).
 4. Push to branch (`git push origin feature/new-feature`).
 5. Create a new Pull Request.
 
